@@ -2,7 +2,7 @@ import Task from "@/components/task";
 import { useTaskStore } from "@/store/tasksStore";
 import type { DetailProps } from "@/types/props";
 import type { Task as TaskType } from "@/types/types";
-import { Card, CardBody, CardFooter, CardHeader } from "@heroui/react";
+import { Card, CardBody, CardFooter, CardHeader, Divider } from "@heroui/react";
 
 /*
     The Eisenhower Matrix is organized in a 2x2 grid. The direction of the grid is left to right and top to bottom
@@ -20,28 +20,28 @@ export default function MatrixLayout() {
 			<CardLayout
 				title="Do:"
 				taskList={tasks
-					.filter((task) => task.status === "Do")
+					.filter((task) => task.matrix === "Do")
 					.reverse()}
 				description="Tasks with deadline and consequences"
 			/>
 			<CardLayout
 				title="Schedule:"
 				taskList={tasks
-					.filter((task) => task.status === "Schedule")
+					.filter((task) => task.matrix === "Schedule")
 					.reverse()}
 				description="Tasks that contribute to long-term success"
 			/>
 			<CardLayout
 				title="Delegate:"
 				taskList={tasks
-					.filter((task) => task.status === "Delegate")
+					.filter((task) => task.matrix === "Delegate")
 					.reverse()}
 				description="Tasks that must get done but require another person"
 			/>
 			<CardLayout
 				title="Delete:"
 				taskList={tasks
-					.filter((task) => task.status === "Delete")
+					.filter((task) => task.matrix === "Delete")
 					.reverse()}
 				description="Distractions and unnecessary tasks"
 			/>
@@ -57,9 +57,10 @@ function CardLayout({ title, description, taskList }: CardLayoutProps) {
 	return (
 		<Card>
 			<CardHeader>
-				<div className="grid gap-2">
+				<div className="grid gap-2 w-full">
 					<h2 className="text-lg">{title}</h2>
 					<p className="text-sm text-foreground">{description}</p>
+					<Divider />
 				</div>
 			</CardHeader>
 			<CardBody>

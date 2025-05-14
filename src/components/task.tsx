@@ -3,9 +3,10 @@ import { Checkbox } from "@heroui/react";
 import { useState } from "react";
 
 import { Select, SelectItem } from "@heroui/select";
-import type { Task, StatusType } from "@/types/types";
+import type { Task, StatusType, MatrixType } from "@/types/types";
 import { useTaskStore } from "@/store/tasksStore";
 import { X } from "lucide-react";
+import { usePageContext } from "@/context/pageContext";
 
 // interface TaskProps extends DetailProps {
 // 	taskStatus: TaskStatusType;
@@ -17,7 +18,11 @@ export default function Task({
 	title,
 	description,
 	status,
+	matrix,
 }: Task) {
+	const page = usePageContext();
+	// console.log(page);
+
 	const [isCompleted, setIsCompleted] = useState(completed);
 
 	const updateTask = useTaskStore((state) => state.updateTask);
@@ -51,7 +56,15 @@ export default function Task({
 							</p>
 						)}
 					</div>
-					<TaskType id={id} status={status} />
+					<div className="flex gap-2 ml-auto w-[35%] items-center">
+						{page === "/matrix" && (
+							<TaskMatrixType id={id} status={matrix} />
+						)}
+						{page === "/board" && (
+							<TaskStatusType id={id} status={status} />
+						)}
+					</div>
+
 					<X
 						className="w-4 h-4"
 						onClick={() => {
@@ -65,7 +78,7 @@ export default function Task({
 	);
 }
 
-export const statusList: { key: StatusType; label: StatusType }[] = [
+export const matrixList: { key: MatrixType; label: MatrixType }[] = [
 	{ key: "Do", label: "Do" },
 	{ key: "Schedule", label: "Schedule" },
 	{ key: "Delegate", label: "Delegate" },
@@ -73,17 +86,49 @@ export const statusList: { key: StatusType; label: StatusType }[] = [
 	{ key: "Inbox", label: "Inbox" },
 ];
 
-function TaskType({ id, status }: { id: string; status: StatusType }) {
+function TaskMatrixType({ id, status }: { id: string; status: MatrixType }) {
+	const [taskMatrix, setTaskMatrix] = useState(status);
+
+	const updateTask = useTaskStore((state) => state.updateTask);
+
+	return (
+		<Select
+			className=""
+			label=""
+			selectedKeys={[taskMatrix]}
+			aria-label="matrix"
+			onChange={(e) => {
+				const value = e.target.value;
+				if (value !== "") {
+					setTaskMatrix(value as MatrixType);
+					updateTask(id, "matrix", value);
+				}
+			}}>
+			{matrixList.map((matrix) => (
+				<SelectItem key={matrix.key}>{matrix.label}</SelectItem>
+			))}
+		</Select>
+	);
+}
+
+export const statusList: { key: StatusType; label: StatusType }[] = [
+	{ key: "Not Started", label: "Not Started" },
+	{ key: "In Progress", label: "In Progress" },
+	{ key: "Completed", label: "Completed" },
+	{ key: "Inbox", label: "Inbox" },
+];
+
+function TaskStatusType({ id, status }: { id: string; status: StatusType }) {
 	const [taskStatus, setTaskStatus] = useState(status);
 
 	const updateTask = useTaskStore((state) => state.updateTask);
 
 	return (
 		<Select
-			className="w-[30%] ml-auto"
+			className=""
 			label=""
 			selectedKeys={[taskStatus]}
-			aria-label="status"
+			aria-label="matrix"
 			onChange={(e) => {
 				const value = e.target.value;
 				if (value !== "") {
@@ -91,8 +136,8 @@ function TaskType({ id, status }: { id: string; status: StatusType }) {
 					updateTask(id, "status", value);
 				}
 			}}>
-			{statusList.map((statusList) => (
-				<SelectItem key={statusList.key}>{statusList.label}</SelectItem>
+			{statusList.map((status) => (
+				<SelectItem key={status.key}>{status.label}</SelectItem>
 			))}
 		</Select>
 	);

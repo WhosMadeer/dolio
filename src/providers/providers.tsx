@@ -1,6 +1,10 @@
+import {
+	PageContextProvider,
+	type PageContextType,
+} from "@/context/pageContext";
 import { HeroUIProvider } from "@heroui/react";
 import { ToastProvider } from "@heroui/toast";
-import { useNavigate, useHref } from "react-router";
+import { useNavigate, useHref, useLocation } from "react-router";
 
 interface Providers {
 	children: React.ReactNode;
@@ -8,11 +12,14 @@ interface Providers {
 
 export default function Providers({ children }: Providers) {
 	const navigate = useNavigate();
+	const location = useLocation();
 
 	return (
 		<HeroUIProvider navigate={navigate} useHref={useHref}>
 			<ToastProvider />
-			{children}
+			<PageContextProvider value={location.pathname as PageContextType}>
+				{children}
+			</PageContextProvider>
 		</HeroUIProvider>
 	);
 }
