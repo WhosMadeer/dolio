@@ -3,6 +3,12 @@ import { useTaskStore } from "@/store/tasksStore";
 import type { DetailProps } from "@/types/props";
 import type { Task as TaskType } from "@/types/types";
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/react";
+import {
+	DndContext,
+	useDroppable,
+	useDraggable,
+	DragOverlay,
+} from "@dnd-kit/core";
 
 /*
     The Eisenhower Matrix is organized in a 2x2 grid. The direction of the grid is left to right and top to bottom
@@ -54,6 +60,10 @@ interface CardLayoutProps extends DetailProps {
 }
 
 function CardLayout({ title, description, taskList }: CardLayoutProps) {
+	const { setNodeRef } = useDroppable({
+		id: title.replace(":", ""),
+	});
+
 	return (
 		<Card>
 			<CardHeader>
@@ -63,7 +73,10 @@ function CardLayout({ title, description, taskList }: CardLayoutProps) {
 				</div>
 			</CardHeader>
 			<CardBody>
-				<div className="grid gap-2 p-4">
+				<div
+					className="grid gap-2 p-4 overflow-hidden"
+					id={title}
+					ref={setNodeRef}>
 					{taskList.map((task) => {
 						return <Task key={task.id} {...task} />;
 					})}

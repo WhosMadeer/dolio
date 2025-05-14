@@ -7,6 +7,7 @@ interface TaskState {
 	addTask: (task: Task) => void;
 	updateTask: (id: string, key: keyof Task, value: any) => void;
 	removeTask: (id: string) => void;
+	getTask: (id: string) => Task | undefined;
 }
 
 export const useTaskStore = create<TaskState>()(
@@ -27,6 +28,9 @@ export const useTaskStore = create<TaskState>()(
 				set((state) => ({
 					tasks: state.tasks.filter((task) => task.id !== id),
 				}));
+			},
+			getTask: (id) => {
+				return get().tasks.find((task) => task.id === id);
 			},
 		}),
 		{

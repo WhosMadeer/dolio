@@ -5,13 +5,17 @@ import { Popover, PopoverTrigger, PopoverContent } from "@heroui/react";
 import { Controller, useForm } from "react-hook-form";
 import type { DetailProps } from "@/types/props";
 import { generateTaskID } from "@/utils/generateTaskID";
+import { useDroppable } from "@dnd-kit/core";
 
 export default function Tasklist() {
 	const inboxTasks = useTaskStore((state) => state.tasks)
 		.filter((task) => task.status === "Inbox")
 		.reverse();
 
-	// const inboxTasks = tasks.filter((task) => task.taskStatus === "Inbox");
+	const { setNodeRef } = useDroppable({
+		id: "Inbox",
+	});
+
 	return (
 		<div className="p-4">
 			<div className="grid place-content-center h-fit p-4">
@@ -22,7 +26,7 @@ export default function Tasklist() {
 				<AddTask />
 			</div>
 			<Divider className="" />
-			<div className="grid gap-2 p-4">
+			<div className="grid gap-2 p-4" ref={setNodeRef}>
 				{inboxTasks.map((task) => {
 					return <Task key={task.id} {...task} />;
 				})}
