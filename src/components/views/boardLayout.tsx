@@ -17,7 +17,7 @@ export default function BoardLayout() {
     */
 
 	return (
-		<div className="grid grid-cols-3 gap-2 p-4">
+		<div className="grid grid-cols-3 gap-2 p-4 h-full">
 			<ColumnLayout
 				title="Not Started"
 				taskList={tasks.filter((task) => task.status === "Not Started")}

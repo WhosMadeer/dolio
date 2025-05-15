@@ -6,7 +6,7 @@ import { AddTaskIconButton } from "@/components/addTask";
 
 export default function Layout() {
 	return (
-		<div className="w-screen h-screen">
+		<div className="w-svw h-svh">
 			<NavigationMenu />
 			<Outlet />
 			<AddTaskIconButton />

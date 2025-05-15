@@ -2,10 +2,11 @@ export type Task = {
 	id: string; // for internal use
 	title: string;
 	description?: string;
-	completed: boolean;
 	priority?: PriorityType;
 	matrix: MatrixType;
 	status: StatusType;
+	createdDate: string;
+	dueDate?: string;
 };
 
 export type PriorityType = "None" | "Low" | "Medium" | "High";

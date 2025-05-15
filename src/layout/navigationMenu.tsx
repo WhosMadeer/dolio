@@ -22,7 +22,7 @@ const pageList: NavBarLink[] = [
 
 export default function NavigationMenu() {
 	return (
-		<Navbar maxWidth="full">
+		<Navbar maxWidth="full" position="static">
 			<NavbarBrand>
 				<h1 className="font-bold">Dolio</h1>
 			</NavbarBrand>

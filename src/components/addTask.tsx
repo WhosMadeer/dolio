@@ -12,6 +12,7 @@ import {
 } from "@heroui/react";
 import { PenLine } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
+import { format } from "date-fns";
 
 export function AddTaskButton() {
 	const addTasks = useTaskStore((state) => state.addTask);
@@ -25,9 +26,10 @@ export function AddTaskButton() {
 			id: generateTaskID(),
 			title: data.title,
 			description: data.description,
-			completed: false,
+			// completed: false,
 			matrix: "Inbox",
-			status: "Inbox",
+			status: "Not Started",
+			createdDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
 		});
 	};
 
@@ -103,9 +105,10 @@ export function AddTaskIconButton() {
 			id: generateTaskID(),
 			title: data.title,
 			description: data.description,
-			completed: false,
+			// completed: false,
 			matrix: "Inbox",
-			status: "Inbox",
+			status: "Not Started",
+			createdDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
 		});
 	};
 
@@ -113,8 +116,8 @@ export function AddTaskIconButton() {
 		<>
 			<Popover placement="top-end">
 				<PopoverTrigger className="fixed bottom-4 right-4 h-16 w-16">
-					<Button color="primary" isIconOnly className="rounded-full">
-						<PenLine className="h-12 w-12" />
+					<Button color="primary" isIconOnly className="">
+						<PenLine className="h-6 w-6" />
 					</Button>
 				</PopoverTrigger>
 				<PopoverContent className="p-4">
