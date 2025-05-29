@@ -13,6 +13,8 @@ import {
 import { PenLine } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { format } from "date-fns";
+import type { Task } from "@/types/types";
+import { addTaskBackend } from "@/api/task";
 
 export function AddTaskButton() {
 	const addTasks = useTaskStore((state) => state.addTask);
@@ -21,8 +23,8 @@ export function AddTaskButton() {
 		defaultValues: {} as DetailProps,
 	});
 
-	const onSubmit = (data: DetailProps) => {
-		addTasks({
+	const onSubmit = async (data: DetailProps) => {
+		const task: Task = {
 			id: generateTaskID(),
 			title: data.title,
 			description: data.description,
@@ -30,7 +32,9 @@ export function AddTaskButton() {
 			matrix: "Inbox",
 			status: "Not Started",
 			createdDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
-		});
+		};
+		addTasks(task);
+		await addTaskBackend(task);
 	};
 
 	return (
@@ -100,8 +104,8 @@ export function AddTaskIconButton() {
 		defaultValues: {} as DetailProps,
 	});
 
-	const onSubmit = (data: DetailProps) => {
-		addTasks({
+	const onSubmit = async (data: DetailProps) => {
+		const task: Task = {
 			id: generateTaskID(),
 			title: data.title,
 			description: data.description,
@@ -109,7 +113,9 @@ export function AddTaskIconButton() {
 			matrix: "Inbox",
 			status: "Not Started",
 			createdDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
-		});
+		};
+		addTasks(task);
+		await addTaskBackend(task);
 	};
 
 	return (

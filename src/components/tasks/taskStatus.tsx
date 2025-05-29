@@ -1,3 +1,4 @@
+import { updateTaskBackend } from "@/api/task";
 import { useTaskStore } from "@/store/tasksStore";
 import type { StatusType } from "@/types/types";
 import {
@@ -78,6 +79,7 @@ export function TaskStatusChip({
 					if (value !== "") {
 						setTaskStatus(value as StatusType);
 						updateTask(id, "status", value);
+						updateTaskBackend(id, "status", value);
 					}
 				}}
 				onClick={(e) => e.stopPropagation()} // Prevent closing drawer
