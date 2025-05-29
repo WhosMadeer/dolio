@@ -3,7 +3,7 @@ import { createContext, useContext, type ReactNode } from "react";
 
 export const TaskContext = createContext<Task | null>(null);
 
-// * PageContext hook
+// * TaskContext hook
 export const useTaskContext = () => {
 	const task = useContext(TaskContext);
 
@@ -19,11 +19,6 @@ interface TaskContextProviderProps {
 	children: ReactNode;
 }
 
-export const TaskContextProvider = ({
-	value,
-	children,
-}: TaskContextProviderProps) => {
-	return (
-		<TaskContext.Provider value={value}>{children}</TaskContext.Provider>
-	);
+export const TaskContextProvider = ({ value, children }: TaskContextProviderProps) => {
+	return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
 };
