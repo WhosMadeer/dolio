@@ -1,11 +1,11 @@
-import type { Task } from "@/types/types";
+import type { TaskType } from "@/types/tasks";
 import { create } from "zustand";
 // import { createJSONStorage, persist } from "zustand/middleware";
 
 interface TaskState {
-	tasks: Task[];
-	addTask: (task: Task) => void;
-	updateTask: (id: string, key: keyof Task, value: any) => void;
+	tasks: TaskType[];
+	addTask: (task: TaskType) => void;
+	updateTask: (id: string, key: keyof TaskType, value: any) => void;
 	removeTask: (id: string) => void;
 }
 

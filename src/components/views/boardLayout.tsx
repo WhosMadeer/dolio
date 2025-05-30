@@ -1,6 +1,6 @@
 import Task from "@/components/task";
 import type { DetailProps } from "@/types/props";
-import type { Task as TaskType } from "@/types/types";
+import type { TaskType } from "@/types/tasks";
 import { Card, CardBody, CardFooter, CardHeader, Divider } from "@heroui/react";
 
 /*

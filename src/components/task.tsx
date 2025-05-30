@@ -1,22 +1,20 @@
 import { Card, CardBody } from "@heroui/react";
-import { memo, useState } from "react";
+import { memo } from "react";
 
 import { removeTask, updateTask } from "@/api/tasks";
 import { usePageContext } from "@/context/pageContext";
 import { useTaskContext } from "@/context/taskContext";
-import type { MatrixType, Task } from "@/types/types";
+import type { MatrixType, TaskType } from "@/types/tasks";
 import { Select, SelectItem } from "@heroui/select";
 import { X } from "lucide-react";
 import { TaskStatusChip } from "./tasks/taskStatus";
 
-const TaskComponent = memo(function Task(task: Task) {
+const TaskComponent = memo(function Task(task: TaskType) {
 	const page = usePageContext();
 
 	const { id, title, description, status, matrix } = task;
 
 	const { setTask } = useTaskContext();
-
-	console.log(task);
 
 	return (
 		<>
@@ -62,18 +60,15 @@ export const matrixList: { key: MatrixType; label: MatrixType }[] = [
 ];
 
 function TaskMatrixType({ id, status }: { id: string; status: MatrixType }) {
-	const [taskMatrix, setTaskMatrix] = useState(status);
-
 	return (
 		<Select
 			className=""
 			label=""
-			selectedKeys={[taskMatrix]}
+			selectedKeys={[status]}
 			aria-label="matrix"
 			onChange={async (e) => {
 				const value = e.target.value;
 				if (value !== "") {
-					setTaskMatrix(value as MatrixType);
 					updateTask(id, "matrix", value);
 				}
 			}}>

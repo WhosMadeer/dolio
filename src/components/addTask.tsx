@@ -4,16 +4,19 @@ import { Popover, PopoverTrigger, Button, PopoverContent, Input, Textarea, Form 
 import { PenLine } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { format } from "date-fns";
-import type { Task } from "@/types/types";
+import type { TaskType } from "@/types/tasks";
 import { addTask } from "@/api/tasks";
+import { useUserContext } from "@/context/userContext";
 
 export function AddTaskButton() {
+	const user = useUserContext();
+
 	const { handleSubmit, control } = useForm({
 		defaultValues: {} as DetailProps,
 	});
 
 	const onSubmit = async (data: DetailProps) => {
-		const task: Task = {
+		const task: TaskType = {
 			id: generateTaskID(),
 			title: data.title,
 			description: data.description,
@@ -21,6 +24,7 @@ export function AddTaskButton() {
 			matrix: "Inbox",
 			status: "Not Started",
 			createdDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+			uid: user?.uid as string,
 		};
 		await addTask(task);
 		// addTasks(task);
@@ -84,12 +88,14 @@ export function AddTaskButton() {
 }
 
 export function AddTaskIconButton() {
+	const user = useUserContext();
+
 	const { handleSubmit, control } = useForm({
 		defaultValues: {} as DetailProps,
 	});
 
 	const onSubmit = async (data: DetailProps) => {
-		const task: Task = {
+		const task: TaskType = {
 			id: generateTaskID(),
 			title: data.title,
 			description: data.description,
@@ -97,6 +103,7 @@ export function AddTaskIconButton() {
 			matrix: "Inbox",
 			status: "Not Started",
 			createdDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+			uid: user?.uid as string,
 		};
 		await addTask(task);
 	};

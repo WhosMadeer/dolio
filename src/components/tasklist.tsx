@@ -1,7 +1,7 @@
 import { Divider } from "@heroui/react";
 import { AddTaskButton } from "./addTask";
 import Task from "./task";
-import type { Task as TaskType } from "@/types/types";
+import type { TaskType } from "@/types/tasks";
 import { memo } from "react";
 
 const Tasklist = memo(function Tasklist({ inboxTasks }: { inboxTasks: TaskType[] }) {

@@ -2,12 +2,12 @@ import { Chip, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader } f
 import { type ReactNode } from "react";
 
 import { useTaskContext } from "@/context/taskContext";
-import type { Task } from "@/types/types";
+import type { TaskType } from "@/types/tasks";
 import { format } from "date-fns";
 import { ClockPlus, LayoutGrid, Loader } from "lucide-react";
 import { TaskStatusChip } from "./tasks/taskStatus";
 
-interface TaskDetailsProps extends Task {
+interface TaskDetailsProps extends TaskType {
 	isOpen: boolean;
 }
 

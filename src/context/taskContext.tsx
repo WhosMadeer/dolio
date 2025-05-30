@@ -1,9 +1,10 @@
-import type { Task } from "@/types/types";
+import type { TaskType } from "@/types/tasks";
 import { createContext, useContext, type Dispatch, type ReactNode, type SetStateAction } from "react";
 
 export type TaskContextType = {
-	task: Task | null;
-	setTask: Dispatch<SetStateAction<Task | null>>;
+	task: TaskType | null;
+	tasks: TaskType[];
+	setTask: Dispatch<SetStateAction<TaskType | null>>;
 };
 
 export const TaskContext = createContext<TaskContextType>({

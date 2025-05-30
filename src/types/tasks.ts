@@ -1,4 +1,4 @@
-export type Task = {
+export type TaskType = {
 	id: string; // for internal use
 	title: string;
 	description?: string;
@@ -7,10 +7,11 @@ export type Task = {
 	status: StatusType;
 	createdDate: string;
 	dueDate?: string;
+	uid: string;
 };
 
 export type PriorityType = "None" | "Low" | "Medium" | "High";
 
 export type MatrixType = "Do" | "Schedule" | "Delegate" | "Delete" | "Inbox";
 
-export type StatusType = "Not Started" | "In Progress" | "Completed" | "Inbox";
+export type StatusType = "Not Started" | "In Progress" | "Completed";

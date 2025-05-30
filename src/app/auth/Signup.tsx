@@ -4,22 +4,25 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Form, Input } from "@he
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 export default function SignUp() {
 	const [isVisible, setIsVisible] = useState(false);
 
+	const navigate = useNavigate();
+
 	const { handleSubmit, control } = useForm<LoginProps>({});
 
 	const onSubmit = async (data: LoginProps) => {
-		// console.log(data);
 		await createUser(data);
+		navigate("/", { replace: true });
 	};
 
 	return (
 		<div className="grid h-screen w-screen place-content-center">
 			<Card>
 				<CardHeader>
-					<h1>Login</h1>
+					<h1>Sign Up</h1>
 				</CardHeader>
 				<Form onSubmit={handleSubmit(onSubmit)}>
 					<CardBody>

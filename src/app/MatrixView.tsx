@@ -1,9 +1,6 @@
 import Tasklist from "@/components/tasklist";
 import MatrixLayout from "@/components/views/matrixLayout";
-import { db } from "@/firebase/firebase";
-import type { Task as TaskType } from "@/types/types";
-import { collection, onSnapshot, query } from "firebase/firestore";
-import { useState, useEffect } from "react";
+import { useTaskContext } from "@/context/taskContext";
 
 export default function MatrixView() {
 	/* 
@@ -12,21 +9,7 @@ export default function MatrixView() {
 
 	*/
 
-	const [tasks, setTasks] = useState<TaskType[]>([]);
-
-	useEffect(() => {
-		const q = query(collection(db, "tasks")); // get all tasks
-
-		const unsubscribe = onSnapshot(q, (querySnapshot) => {
-			setTasks(
-				querySnapshot.docs.map((doc) => {
-					return doc.data() as TaskType;
-				})
-			);
-		});
-
-		return () => unsubscribe();
-	}, []);
+	const { tasks } = useTaskContext();
 
 	return (
 		<div className="md:grid grid-cols-[1fr_0.6fr]">

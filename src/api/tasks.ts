@@ -1,19 +1,28 @@
 import { db } from "@/firebase/firebase";
-import type { Task } from "@/types/types";
-import { collection, deleteDoc, doc, getDocs, query, setDoc, updateDoc } from "firebase/firestore";
+import type { TaskType } from "@/types/tasks";
+import { collection, deleteDoc, doc, getDoc, getDocs, query, setDoc, updateDoc } from "firebase/firestore";
 
 export const getAllTasks = async () => {
 	const q = query(collection(db, "tasks")); // get all tasks
 	const querySnapshot = await getDocs(q);
 
-	return querySnapshot.docs.map((doc) => doc.data() as Task);
+	return querySnapshot.docs.map((doc) => doc.data() as TaskType);
 };
 
-export const addTask = async (task: Task) => {
+export const getTask = async (id: string) => {
+	const docs = await getDoc(doc(db, "tasks", id));
+	if (docs.exists()) {
+		return docs.data() as TaskType;
+	} else {
+		return null;
+	}
+};
+
+export const addTask = async (task: TaskType) => {
 	await setDoc(doc(db, "tasks", task.id), task);
 };
 
-export const updateTask = async (id: string, key: keyof Task, value: any) => {
+export const updateTask = async (id: string, key: keyof TaskType, value: any) => {
 	await updateDoc(doc(db, "tasks", id), { [key]: value });
 };
 

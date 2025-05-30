@@ -4,15 +4,18 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Form, Input } from "@he
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
 export default function Login() {
 	const [isVisible, setIsVisible] = useState(false);
 
+	const navigate = useNavigate();
+
 	const { handleSubmit, control } = useForm<LoginProps>({});
 
 	const onSubmit = async (data: LoginProps) => {
-		// console.log(data);
 		await loginUser(data);
+		navigate("/", { replace: true });
 	};
 
 	return (
