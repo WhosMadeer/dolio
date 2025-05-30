@@ -20,12 +20,12 @@ const TaskComponent = memo(function Task(task: TaskType) {
 		<>
 			<Card>
 				{/* <CardHeader></CardHeader> */}
-				<CardBody
-					onClick={() => {
-						setTask(task);
-					}}
-					className="hover:cursor-pointer">
-					<div className="flex gap-2 items-center">
+				<CardBody className="hover:cursor-pointer flex gap-2 flex-row items-center">
+					<div
+						className="flex gap-2 items-center"
+						onClick={() => {
+							setTask(task);
+						}}>
 						<TaskStatusChip id={id} status={status} />
 
 						<div className="grid gap-2 items-center h-full">
@@ -35,14 +35,14 @@ const TaskComponent = memo(function Task(task: TaskType) {
 						<div className="flex gap-2 ml-auto w-[35%] items-center">
 							{page === "/matrix" && <TaskMatrixType id={id} status={matrix} />}
 						</div>
-
-						<X
-							className="w-4 h-4"
-							onClick={async () => {
-								await removeTask(id);
-							}}
-						/>
 					</div>
+					<X
+						className="w-4 h-4 ml-auto"
+						onClick={async (e) => {
+							e.preventDefault();
+							await removeTask(id);
+						}}
+					/>
 				</CardBody>
 				{/* <CardFooter></CardFooter> */}
 			</Card>
