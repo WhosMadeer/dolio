@@ -1,5 +1,4 @@
 import Task from "@/components/task";
-import { useTaskStore } from "@/store/tasksStore";
 import type { DetailProps } from "@/types/props";
 import type { Task as TaskType } from "@/types/types";
 import { Card, CardBody, CardFooter, CardHeader, Divider } from "@heroui/react";
@@ -9,8 +8,7 @@ import { Card, CardBody, CardFooter, CardHeader, Divider } from "@heroui/react";
     Do, Schedule, Delegate, Delete
 */
 
-export default function MatrixLayout() {
-	const tasks = useTaskStore((state) => state.tasks);
+export default function MatrixLayout({ tasks }: { tasks: TaskType[] }) {
 	/*
         Each part of the grid gets a shallow copy of the task list that is filtered by the task status
     */
@@ -19,30 +17,22 @@ export default function MatrixLayout() {
 		<div className="grid grid-cols-2 grid-rows-2 gap-2 p-4 md:min-h-[80dvh]">
 			<CardLayout
 				title="Do:"
-				taskList={tasks
-					.filter((task) => task.matrix === "Do")
-					.reverse()}
+				taskList={tasks.filter((task) => task.matrix === "Do").reverse()}
 				description="Tasks with deadline and consequences"
 			/>
 			<CardLayout
 				title="Schedule:"
-				taskList={tasks
-					.filter((task) => task.matrix === "Schedule")
-					.reverse()}
+				taskList={tasks.filter((task) => task.matrix === "Schedule").reverse()}
 				description="Tasks that contribute to long-term success"
 			/>
 			<CardLayout
 				title="Delegate:"
-				taskList={tasks
-					.filter((task) => task.matrix === "Delegate")
-					.reverse()}
+				taskList={tasks.filter((task) => task.matrix === "Delegate").reverse()}
 				description="Tasks that must get done but require another person"
 			/>
 			<CardLayout
 				title="Delete:"
-				taskList={tasks
-					.filter((task) => task.matrix === "Delete")
-					.reverse()}
+				taskList={tasks.filter((task) => task.matrix === "Delete").reverse()}
 				description="Distractions and unnecessary tasks"
 			/>
 		</div>

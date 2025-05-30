@@ -1,6 +1,6 @@
 import { PageContextProvider, type PageContextType } from "@/context/pageContext";
 import { TaskContextProvider } from "@/context/taskContext";
-import { UserContextProvider } from "@/context/userContext";
+import { UserContextProvider, type UserContextType } from "@/context/userContext";
 import { auth } from "@/firebase/firebase";
 import { HeroUIProvider } from "@heroui/react";
 import { ToastProvider } from "@heroui/toast";
@@ -16,10 +16,10 @@ export default function Providers({ children }: Providers) {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const [user, setUser] = useState<User | null>(null);
+	const [user, setUser] = useState<UserContextType>(undefined);
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
-			setUser(user);
+			setUser(user); // here it assigns null if not signed in or user if it is signed in
 		});
 		return () => unsubscribe(); // Cleanup on unmount
 	}, [auth]);

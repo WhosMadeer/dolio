@@ -1,14 +1,6 @@
-import { useTaskStore } from "@/store/tasksStore";
+import { updateTask } from "@/api/tasks";
 import type { StatusType } from "@/types/types";
-import {
-	Chip,
-	Dropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownTrigger,
-	Select,
-	SelectItem,
-} from "@heroui/react";
+import { Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Select, SelectItem } from "@heroui/react";
 import { useState } from "react";
 
 export const statusList: { key: StatusType; label: StatusType }[] = [
@@ -18,16 +10,8 @@ export const statusList: { key: StatusType; label: StatusType }[] = [
 	{ key: "Inbox", label: "Inbox" },
 ];
 
-export function TaskStatusSelect({
-	id,
-	status,
-}: {
-	id: string;
-	status: StatusType;
-}) {
+export function TaskStatusSelect({ id, status }: { id: string; status: StatusType }) {
 	const [taskStatus, setTaskStatus] = useState(status);
-
-	const updateTask = useTaskStore((state) => state.updateTask);
 
 	return (
 		<Select
@@ -36,11 +20,12 @@ export function TaskStatusSelect({
 			label=""
 			selectedKeys={[taskStatus]}
 			aria-label="status"
-			onChange={(e) => {
+			onChange={async (e) => {
 				const value = e.target.value;
 				if (value !== "") {
 					setTaskStatus(value as StatusType);
-					updateTask(id, "status", value);
+					// updateTask(id, "status", value);
+					await updateTask(id, "status", value);
 				}
 			}}>
 			{statusList.map((status) => (
@@ -50,16 +35,8 @@ export function TaskStatusSelect({
 	);
 }
 
-export function TaskStatusChip({
-	id,
-	status,
-}: {
-	id: string;
-	status: StatusType;
-}) {
+export function TaskStatusChip({ id, status }: { id: string; status: StatusType }) {
 	const [taskStatus, setTaskStatus] = useState(status);
-
-	const updateTask = useTaskStore((state) => state.updateTask);
 
 	return (
 		<Dropdown>
@@ -73,18 +50,16 @@ export function TaskStatusChip({
 				selectionMode="single"
 				disallowEmptySelection={true}
 				selectedKeys={[taskStatus]}
-				onSelectionChange={(keys) => {
+				onSelectionChange={async (keys) => {
 					const value = keys.currentKey;
 					if (value !== "") {
 						setTaskStatus(value as StatusType);
-						updateTask(id, "status", value);
+						await updateTask(id, "status", value);
 					}
 				}}
 				onClick={(e) => e.stopPropagation()} // Prevent closing drawer
 			>
-				{(status) => (
-					<DropdownItem key={status.key}>{status.label}</DropdownItem>
-				)}
+				{(status) => <DropdownItem key={status.key}>{status.label}</DropdownItem>}
 			</DropdownMenu>
 		</Dropdown>
 	);

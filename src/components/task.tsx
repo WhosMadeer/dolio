@@ -9,32 +9,28 @@ import {
 	DrawerHeader,
 	useDisclosure,
 } from "@heroui/react";
-import { useState, type ReactNode } from "react";
+import { memo, useState, type ReactNode } from "react";
 
 import { Select, SelectItem } from "@heroui/select";
 import type { Task, MatrixType } from "@/types/types";
-import { useTaskStore } from "@/store/tasksStore";
 import { ClockPlus, LayoutGrid, Loader, X } from "lucide-react";
 import { usePageContext } from "@/context/pageContext";
 import { format } from "date-fns";
 import { TaskStatusChip } from "./tasks/taskStatus";
+import { removeTask, updateTask } from "@/api/tasks";
 
 // interface TaskProps extends DetailProps {
 // 	taskStatus: TaskStatusType;
 // }
 
-export default function Task(task: Task) {
+const TaskComponent = memo(function Task(task: Task) {
 	const page = usePageContext();
 
 	const { id, title, description, status, matrix } = task;
 
-	// const [isCompleted, setIsCompleted] = useState(completed);
-
-	// const updateTask = useTaskStore((state) => state.updateTask);
-	const removeTask = useTaskStore((state) => state.removeTask);
-
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+	console.log(isOpen);
 	return (
 		<>
 			<Card>
@@ -45,36 +41,27 @@ export default function Task(task: Task) {
 
 						<div className="grid gap-2 items-center h-full">
 							<h1 className={"text-lg"}>{title}</h1>
-							{description && (
-								<p className={"text-sm text-foreground"}>
-									{description}
-								</p>
-							)}
+							{description && <p className={"text-sm text-foreground"}>{description}</p>}
 						</div>
 						<div className="flex gap-2 ml-auto w-[35%] items-center">
-							{page === "/matrix" && (
-								<TaskMatrixType id={id} status={matrix} />
-							)}
+							{page === "/matrix" && <TaskMatrixType id={id} status={matrix} />}
 						</div>
 
 						<X
 							className="w-4 h-4"
-							onClick={() => {
-								removeTask(id);
+							onClick={async () => {
+								await removeTask(id);
 							}}
 						/>
 					</div>
 				</CardBody>
 				{/* <CardFooter></CardFooter> */}
 			</Card>
-			<TaskDetails
-				isOpen={isOpen}
-				onOpenChange={onOpenChange}
-				{...task}
-			/>
+			<TaskDetails isOpen={isOpen} onOpenChange={onOpenChange} {...task} />
 		</>
 	);
-}
+});
+export default TaskComponent;
 
 interface TaskDetailsProps extends Task {
 	isOpen: boolean;
@@ -105,9 +92,7 @@ export function TaskDetails({
 					<>
 						<DrawerHeader className="flex flex-col">
 							<h1>{title}</h1>
-							<p className="text-medium font-normal">
-								{description}
-							</p>
+							<p className="text-medium font-normal">{description}</p>
 						</DrawerHeader>
 						<DrawerBody>
 							{/* <div className="grid grid-cols-[0.4fr_1fr]"></div> */}
@@ -115,20 +100,12 @@ export function TaskDetails({
 								<TaskDetailsStats
 									icon={<ClockPlus />}
 									title={"Time created"}
-									data={format(
-										new Date(createdDate),
-										"MMMM d, yyyy hh:mm"
-									)}
+									data={format(new Date(createdDate), "MMMM d, yyyy hh:mm")}
 								/>
 								<TaskDetailsStats
 									icon={<Loader />}
 									title={"Status"}
-									data={
-										<TaskStatusChip
-											id={id}
-											status={status}
-										/>
-									}
+									data={<TaskStatusChip id={id} status={status} />}
 								/>
 								<TaskDetailsStats
 									icon={<LayoutGrid />}
@@ -138,10 +115,7 @@ export function TaskDetails({
 								<TaskDetailsStats
 									icon={<ClockPlus />}
 									title={"Time created"}
-									data={format(
-										new Date(createdDate),
-										"MMMM d, yyyy hh:mm"
-									)}
+									data={format(new Date(createdDate), "MMMM d, yyyy hh:mm")}
 								/>
 							</div>
 						</DrawerBody>
@@ -179,15 +153,13 @@ export const matrixList: { key: MatrixType; label: MatrixType }[] = [
 function TaskMatrixType({ id, status }: { id: string; status: MatrixType }) {
 	const [taskMatrix, setTaskMatrix] = useState(status);
 
-	const updateTask = useTaskStore((state) => state.updateTask);
-
 	return (
 		<Select
 			className=""
 			label=""
 			selectedKeys={[taskMatrix]}
 			aria-label="matrix"
-			onChange={(e) => {
+			onChange={async (e) => {
 				const value = e.target.value;
 				if (value !== "") {
 					setTaskMatrix(value as MatrixType);

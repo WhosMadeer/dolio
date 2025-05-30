@@ -1,28 +1,19 @@
-import { useTaskStore } from "@/store/tasksStore";
 import type { DetailProps } from "@/types/props";
 import { generateTaskID } from "@/utils/generateTaskID";
-import {
-	Popover,
-	PopoverTrigger,
-	Button,
-	PopoverContent,
-	Input,
-	Textarea,
-	Form,
-} from "@heroui/react";
+import { Popover, PopoverTrigger, Button, PopoverContent, Input, Textarea, Form } from "@heroui/react";
 import { PenLine } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { format } from "date-fns";
+import type { Task } from "@/types/types";
+import { addTask } from "@/api/tasks";
 
 export function AddTaskButton() {
-	const addTasks = useTaskStore((state) => state.addTask);
-
 	const { handleSubmit, control } = useForm({
 		defaultValues: {} as DetailProps,
 	});
 
-	const onSubmit = (data: DetailProps) => {
-		addTasks({
+	const onSubmit = async (data: DetailProps) => {
+		const task: Task = {
 			id: generateTaskID(),
 			title: data.title,
 			description: data.description,
@@ -30,7 +21,9 @@ export function AddTaskButton() {
 			matrix: "Inbox",
 			status: "Not Started",
 			createdDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
-		});
+		};
+		await addTask(task);
+		// addTasks(task);
 	};
 
 	return (
@@ -80,10 +73,7 @@ export function AddTaskButton() {
 								/>
 							)}
 						/>
-						<Button
-							type="submit"
-							color="primary"
-							className="mx-auto">
+						<Button type="submit" color="primary" className="mx-auto">
 							Add Task to Inbox
 						</Button>
 					</Form>
@@ -94,14 +84,12 @@ export function AddTaskButton() {
 }
 
 export function AddTaskIconButton() {
-	const addTasks = useTaskStore((state) => state.addTask);
-
 	const { handleSubmit, control } = useForm({
 		defaultValues: {} as DetailProps,
 	});
 
-	const onSubmit = (data: DetailProps) => {
-		addTasks({
+	const onSubmit = async (data: DetailProps) => {
+		const task: Task = {
 			id: generateTaskID(),
 			title: data.title,
 			description: data.description,
@@ -109,7 +97,8 @@ export function AddTaskIconButton() {
 			matrix: "Inbox",
 			status: "Not Started",
 			createdDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
-		});
+		};
+		await addTask(task);
 	};
 
 	return (
@@ -161,10 +150,7 @@ export function AddTaskIconButton() {
 								/>
 							)}
 						/>
-						<Button
-							type="submit"
-							color="primary"
-							className="mx-auto">
+						<Button type="submit" color="primary" className="mx-auto">
 							Create Task
 						</Button>
 					</Form>

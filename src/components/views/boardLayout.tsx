@@ -1,5 +1,4 @@
 import Task from "@/components/task";
-import { useTaskStore } from "@/store/tasksStore";
 import type { DetailProps } from "@/types/props";
 import type { Task as TaskType } from "@/types/types";
 import { Card, CardBody, CardFooter, CardHeader, Divider } from "@heroui/react";
@@ -9,27 +8,16 @@ import { Card, CardBody, CardFooter, CardHeader, Divider } from "@heroui/react";
     The direction of the columns go left to right 
 */
 
-export default function BoardLayout() {
-	const tasks = useTaskStore((state) => state.tasks);
-
+export default function BoardLayout({ tasks }: { tasks: TaskType[] }) {
 	/*
         Each column of the board gets a shallow copy of the task list that is filtered by the status
     */
 
 	return (
 		<div className="grid grid-cols-3 gap-2 p-4 h-full">
-			<ColumnLayout
-				title="Not Started"
-				taskList={tasks.filter((task) => task.status === "Not Started")}
-			/>
-			<ColumnLayout
-				title="In Progress"
-				taskList={tasks.filter((task) => task.status === "In Progress")}
-			/>
-			<ColumnLayout
-				title="Completed"
-				taskList={tasks.filter((task) => task.status === "Completed")}
-			/>
+			<ColumnLayout title="Not Started" taskList={tasks.filter((task) => task.status === "Not Started")} />
+			<ColumnLayout title="In Progress" taskList={tasks.filter((task) => task.status === "In Progress")} />
+			<ColumnLayout title="Completed" taskList={tasks.filter((task) => task.status === "Completed")} />
 		</div>
 	);
 }

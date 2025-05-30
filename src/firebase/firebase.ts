@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { connectAuthEmulator, getAuth } from "firebase/auth";
-import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
+import { connectFirestoreEmulator, initializeFirestore, persistentLocalCache } from "firebase/firestore";
 
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -16,7 +16,9 @@ const firebaseConfig = {
 
 // Initialize Firebase objects
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const db = initializeFirestore(app, {
+	localCache: persistentLocalCache(/*settings*/ {}), // Firestore Persistance
+});
 const auth = getAuth();
 
 // Setup Emulators for Firebase
