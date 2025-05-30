@@ -1,41 +1,32 @@
-import {
-	Card,
-	CardBody,
-	Chip,
-	Drawer,
-	DrawerBody,
-	DrawerContent,
-	DrawerFooter,
-	DrawerHeader,
-	useDisclosure,
-} from "@heroui/react";
-import { memo, useState, type ReactNode } from "react";
+import { Card, CardBody } from "@heroui/react";
+import { memo, useState } from "react";
 
-import { Select, SelectItem } from "@heroui/select";
-import type { Task, MatrixType } from "@/types/types";
-import { ClockPlus, LayoutGrid, Loader, X } from "lucide-react";
-import { usePageContext } from "@/context/pageContext";
-import { format } from "date-fns";
-import { TaskStatusChip } from "./tasks/taskStatus";
 import { removeTask, updateTask } from "@/api/tasks";
-
-// interface TaskProps extends DetailProps {
-// 	taskStatus: TaskStatusType;
-// }
+import { usePageContext } from "@/context/pageContext";
+import { useTaskContext } from "@/context/taskContext";
+import type { MatrixType, Task } from "@/types/types";
+import { Select, SelectItem } from "@heroui/select";
+import { X } from "lucide-react";
+import { TaskStatusChip } from "./tasks/taskStatus";
 
 const TaskComponent = memo(function Task(task: Task) {
 	const page = usePageContext();
 
 	const { id, title, description, status, matrix } = task;
 
-	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+	const { setTask } = useTaskContext();
 
-	console.log(isOpen);
+	console.log(task);
+
 	return (
 		<>
 			<Card>
 				{/* <CardHeader></CardHeader> */}
-				<CardBody onClick={onOpen} className="hover:cursor-pointer">
+				<CardBody
+					onClick={() => {
+						setTask(task);
+					}}
+					className="hover:cursor-pointer">
 					<div className="flex gap-2 items-center">
 						<TaskStatusChip id={id} status={status} />
 
@@ -57,90 +48,10 @@ const TaskComponent = memo(function Task(task: Task) {
 				</CardBody>
 				{/* <CardFooter></CardFooter> */}
 			</Card>
-			<TaskDetails isOpen={isOpen} onOpenChange={onOpenChange} {...task} />
 		</>
 	);
 });
 export default TaskComponent;
-
-interface TaskDetailsProps extends Task {
-	isOpen: boolean;
-	// onOpen: () => void;
-	// onClose: () => void;
-	onOpenChange: () => void;
-	// isControlled: boolean;
-	// getButtonProps: (props?: any) => any;
-	// getDisclosureProps: (props?: any) => any;
-}
-
-export function TaskDetails({
-	isOpen,
-	// onOpen,
-	onOpenChange,
-	...task
-}: TaskDetailsProps) {
-	const { id, title, description, status, matrix, createdDate } = task;
-
-	return (
-		<Drawer
-			isOpen={isOpen}
-			onOpenChange={onOpenChange}
-			className="data-[placement=right]:sm:m-2 data-[placement=left]:sm:m-2 rounded-medium"
-			size="xl">
-			<DrawerContent>
-				{() => (
-					<>
-						<DrawerHeader className="flex flex-col">
-							<h1>{title}</h1>
-							<p className="text-medium font-normal">{description}</p>
-						</DrawerHeader>
-						<DrawerBody>
-							{/* <div className="grid grid-cols-[0.4fr_1fr]"></div> */}
-							<div className="flex flex-col gap-4">
-								<TaskDetailsStats
-									icon={<ClockPlus />}
-									title={"Time created"}
-									data={format(new Date(createdDate), "MMMM d, yyyy hh:mm")}
-								/>
-								<TaskDetailsStats
-									icon={<Loader />}
-									title={"Status"}
-									data={<TaskStatusChip id={id} status={status} />}
-								/>
-								<TaskDetailsStats
-									icon={<LayoutGrid />}
-									title={"Matrix Priority"}
-									data={<Chip>{matrix}</Chip>}
-								/>
-								<TaskDetailsStats
-									icon={<ClockPlus />}
-									title={"Time created"}
-									data={format(new Date(createdDate), "MMMM d, yyyy hh:mm")}
-								/>
-							</div>
-						</DrawerBody>
-						<DrawerFooter></DrawerFooter>
-					</>
-				)}
-			</DrawerContent>
-		</Drawer>
-	);
-}
-
-interface TaskDetailsStatsProps {
-	icon: ReactNode;
-	title: string;
-	data: string | number | boolean | ReactNode;
-}
-
-function TaskDetailsStats({ icon, title, data }: TaskDetailsStatsProps) {
-	return (
-		<div className="grid grid-cols-[0.1fr_0.5fr_1fr] gap-2">
-			{icon}
-			<span>{title}</span> <span>{data}</span>
-		</div>
-	);
-}
 
 export const matrixList: { key: MatrixType; label: MatrixType }[] = [
 	{ key: "Do", label: "Do" },

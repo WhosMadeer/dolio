@@ -1,7 +1,14 @@
 import type { Task } from "@/types/types";
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext, type Dispatch, type ReactNode, type SetStateAction } from "react";
 
-export const TaskContext = createContext<Task | null>(null);
+export type TaskContextType = {
+	task: Task | null;
+	setTask: Dispatch<SetStateAction<Task | null>>;
+};
+
+export const TaskContext = createContext<TaskContextType>({
+	task: null,
+} as TaskContextType);
 
 // * TaskContext hook
 export const useTaskContext = () => {
@@ -15,7 +22,7 @@ export const useTaskContext = () => {
 };
 
 interface TaskContextProviderProps {
-	value: Task | null;
+	value: TaskContextType;
 	children: ReactNode;
 }
 
