@@ -1,7 +1,7 @@
 import { getTask, updateTask } from "@/api/tasks";
 import { useTaskContext } from "@/context/taskContext";
 import type { StatusType } from "@/types/tasks";
-import { Chip, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Select, SelectItem } from "@heroui/react";
+import { Chip, cn, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Select, SelectItem } from "@heroui/react";
 
 export const statusList: { key: StatusType; label: StatusType }[] = [
 	{ key: "Not Started", label: "Not Started" },
@@ -40,7 +40,13 @@ export function TaskStatusChip({ id, status }: { id: string; status: StatusType 
 	return (
 		<Dropdown>
 			<DropdownTrigger className="w-fit">
-				<Chip radius="sm" className="w-8">
+				<Chip
+					radius="sm"
+					className={cn(
+						"w-8",
+						status === "In Progress" && "bg-yellow-400",
+						status === "Completed" && "bg-emerald-600"
+					)}>
 					{status}
 				</Chip>
 			</DropdownTrigger>

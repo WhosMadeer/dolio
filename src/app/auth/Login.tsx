@@ -4,7 +4,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Form, Input } from "@he
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function Login() {
 	const [isVisible, setIsVisible] = useState(false);
@@ -20,9 +20,9 @@ export default function Login() {
 
 	return (
 		<div className="grid h-screen w-screen place-content-center">
-			<Card>
+			<Card className="p-4 w-[18vw]">
 				<CardHeader>
-					<h1>Login</h1>
+					<h1 className="text-xl font-bold">Login</h1>
 				</CardHeader>
 				<Form onSubmit={handleSubmit(onSubmit)}>
 					<CardBody>
@@ -80,10 +80,17 @@ export default function Login() {
 							/>
 						</div>
 					</CardBody>
-					<CardFooter>
-						<Button type="submit" color="primary">
+					<CardFooter className="flex flex-col gap-2">
+						<Button type="submit" color="primary" className="w-full">
 							Login
 						</Button>
+						<span className="text-sm">
+							Need to make an account?{" "}
+							<Link to="/signup" className="text-secondary underline">
+								Sign up
+							</Link>{" "}
+							here
+						</span>
 					</CardFooter>
 				</Form>
 			</Card>

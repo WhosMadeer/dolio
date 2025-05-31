@@ -1,6 +1,6 @@
 import type { DetailProps } from "@/types/props";
 import { generateTaskID } from "@/utils/generateTaskID";
-import { Popover, PopoverTrigger, Button, PopoverContent, Input, Textarea, Form } from "@heroui/react";
+import { Popover, PopoverTrigger, Button, PopoverContent, Input, Textarea, Form, DatePicker } from "@heroui/react";
 import { PenLine } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { format } from "date-fns";
@@ -20,14 +20,13 @@ export function AddTaskButton() {
 			id: generateTaskID(),
 			title: data.title,
 			description: data.description,
-			// completed: false,
 			matrix: "Inbox",
 			status: "Not Started",
-			createdDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
+			createdDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss"),
 			uid: user?.uid as string,
+			dueDate: data.dueDate?.toString(),
 		};
 		await addTask(task);
-		// addTasks(task);
 	};
 
 	return (
@@ -77,6 +76,24 @@ export function AddTaskButton() {
 								/>
 							)}
 						/>
+						<Controller
+							control={control}
+							name="dueDate"
+							render={({ field: { name, onChange, onBlur, ref }, fieldState: { invalid, error } }) => (
+								<DatePicker
+									hideTimeZone
+									showMonthAndYearPickers
+									granularity="minute"
+									ref={ref}
+									errorMessage={error?.message}
+									isInvalid={invalid}
+									name={name}
+									onChange={onChange}
+									onBlur={onBlur}
+									label={"Due Date"}
+								/>
+							)}
+						/>
 						<Button type="submit" color="primary" className="mx-auto">
 							Add Task to Inbox
 						</Button>
@@ -99,11 +116,11 @@ export function AddTaskIconButton() {
 			id: generateTaskID(),
 			title: data.title,
 			description: data.description,
-			// completed: false,
 			matrix: "Inbox",
 			status: "Not Started",
 			createdDate: format(new Date(), "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"),
 			uid: user?.uid as string,
+			dueDate: data.dueDate?.toString(),
 		};
 		await addTask(task);
 	};
@@ -154,6 +171,24 @@ export function AddTaskIconButton() {
 									onChange={onChange}
 									onBlur={onBlur}
 									label={"Description"}
+								/>
+							)}
+						/>
+						<Controller
+							control={control}
+							name="dueDate"
+							render={({ field: { name, onChange, onBlur, ref }, fieldState: { invalid, error } }) => (
+								<DatePicker
+									hideTimeZone
+									showMonthAndYearPickers
+									granularity="minute"
+									ref={ref}
+									errorMessage={error?.message}
+									isInvalid={invalid}
+									name={name}
+									onChange={onChange}
+									onBlur={onBlur}
+									label={"Due Date"}
 								/>
 							)}
 						/>

@@ -52,7 +52,7 @@ export default function Providers({ children }: Providers) {
 		}
 	}, [user]);
 
-	console.log(tasks);
+	console.log(tasks, task);
 
 	return (
 		<HeroUIProvider navigate={navigate} useHref={useHref}>

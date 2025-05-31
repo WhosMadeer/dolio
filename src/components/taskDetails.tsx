@@ -4,7 +4,7 @@ import { type ReactNode } from "react";
 import { useTaskContext } from "@/context/taskContext";
 import type { TaskType } from "@/types/tasks";
 import { format } from "date-fns";
-import { ClockPlus, LayoutGrid, Loader } from "lucide-react";
+import { ClockFading, ClockPlus, LayoutGrid, Loader } from "lucide-react";
 import { TaskStatusChip } from "./tasks/taskStatus";
 
 interface TaskDetailsProps extends TaskType {
@@ -12,7 +12,7 @@ interface TaskDetailsProps extends TaskType {
 }
 
 export function TaskDetails({ isOpen, ...task }: TaskDetailsProps) {
-	const { id, title, description, status, matrix, createdDate } = task;
+	const { id, title, description, status, matrix, createdDate, dueDate } = task;
 
 	const { setTask } = useTaskContext();
 
@@ -31,12 +31,13 @@ export function TaskDetails({ isOpen, ...task }: TaskDetailsProps) {
 						</DrawerHeader>
 						<DrawerBody>
 							{/* <div className="grid grid-cols-[0.4fr_1fr]"></div> */}
-							<div className="flex flex-col gap-4">
+							<div className="flex flex-col gap-6">
 								<TaskDetailsStats
 									icon={<ClockPlus />}
 									title={"Time created"}
-									data={format(new Date(createdDate), "MMMM d, yyyy hh:mm")}
+									data={format(new Date(createdDate), "MMMM d, yyyy hh:mm aa")}
 								/>
+
 								<TaskDetailsStats
 									icon={<Loader />}
 									title={"Status"}
@@ -47,11 +48,11 @@ export function TaskDetails({ isOpen, ...task }: TaskDetailsProps) {
 									title={"Matrix Priority"}
 									data={<Chip>{matrix}</Chip>}
 								/>
-								{/* <TaskDetailsStats
-									icon={<ClockPlus />}
-									title={"Time created"}
-									data={format(new Date(createdDate), "MMMM d, yyyy hh:mm")}
-								/> */}
+								<TaskDetailsStats
+									icon={<ClockFading />}
+									title={"Due Date"}
+									data={dueDate ? format(new Date(dueDate), "MMMM d, yyyy hh:mm aa") : "Empty"}
+								/>
 							</div>
 						</DrawerBody>
 						<DrawerFooter></DrawerFooter>

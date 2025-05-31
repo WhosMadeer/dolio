@@ -5122,6 +5122,7 @@ __metadata:
   dependencies:
     "@eslint/js": "npm:^9.25.0"
     "@heroui/react": "npm:^2.7.8"
+    "@internationalized/date": "npm:3.8.0"
     "@types/node": "npm:^22.15.17"
     "@types/react": "npm:^19.1.2"
     "@types/react-dom": "npm:^19.1.2"
